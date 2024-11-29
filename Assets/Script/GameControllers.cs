@@ -3,12 +3,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
 public class GameControllers : MonoBehaviourPunCallbacks
 {
     [SerializeField] private GameObject playerPrefab;
-
-    [SerializeField] private float survivalTime = 60f; 
-    private float timer = 0f;
 
     void Start()
     {

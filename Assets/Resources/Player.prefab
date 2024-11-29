@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 491217152186689954}
   - component: {fileID: 4820035376513916679}
   - component: {fileID: 3028810184581260682}
+  - component: {fileID: -6487566128335680637}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -125,8 +126,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerNameText: {fileID: 2872135216470333684}
-  bulletPrefab: {fileID: 0}
-  speed: 100
+  bulletPrefab: {fileID: 783454722266371964, guid: 85cbd133cb8d74c4e98b6a046185e7f7,
+    type: 3}
+  speed: 80
 --- !u!114 &4820035376513916679
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -166,6 +168,33 @@ MonoBehaviour:
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
+--- !u!54 &-6487566128335680637
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 368397120038133422}
+  serializedVersion: 4
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 80
+  m_CollisionDetection: 0
 --- !u!1 &826418099408676594
 GameObject:
   m_ObjectHideFlags: 0

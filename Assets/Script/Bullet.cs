@@ -5,11 +5,29 @@ using Photon.Pun;
 
 public class Bullet : MonoBehaviourPun
 {
-    [SerializeField] private float lifeTime = 3f;
+    private int ownerId;
+    private Rigidbody rb;
+    [SerializeField] private float speed;
+    private Vector3 direction;
 
-    private void Start()
+    private void Awake()
     {
-        Destroy(gameObject, lifeTime); 
+        rb = GetComponent<Rigidbody>();
+    }
+
+    public void SetUp(Vector3 direction, int ownerId)
+    {
+        this.direction = direction;
+        this.ownerId = ownerId;
+    }
+
+    private void Update()
+    {
+        if(!photonView.IsMine || !PhotonNetwork.IsConnected)
+        {
+            return;
+        }
+        rb.velocity = direction.normalized * speed;
     }
 
     private void OnTriggerEnter(Collider other)
@@ -18,15 +36,9 @@ public class Bullet : MonoBehaviourPun
         {
             PhotonNetwork.Destroy(other.gameObject); 
         }
-        else if (other.CompareTag("Enemy2"))
+        else
         {
-            Enemy enemy = other.GetComponent<Enemy>();
-            if (enemy != null)
-            {
-                enemy.TakeDamage(1); 
-            }
+            PhotonNetwork.Destroy(gameObject);
         }
-
-        PhotonNetwork.Destroy(gameObject); 
     }
 }

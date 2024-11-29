@@ -62,16 +62,10 @@ public class Player : MonoBehaviourPun
     {
         if (Input.GetMouseButtonDown(0)) 
         {
-            photonView.RPC("FireBullet", RpcTarget.All, transform.position, transform.forward); 
+            GameObject obj = PhotonNetwork.Instantiate(bulletPrefab.name, transform.position, Quaternion.identity);
+            obj.GetComponent<Bullet>().SetUp(transform.forward, photonView.ViewID);
         }
     }
 
-    [PunRPC]
-    void FireBullet(Vector3 position, Vector3 direction)
-    {
-        
-        GameObject bullet = Instantiate(bulletPrefab, position, Quaternion.identity);
-        bullet.GetComponent<Rigidbody>().velocity = direction * 10f; 
-        Destroy(bullet, 2f); 
-    }
+    
 }
