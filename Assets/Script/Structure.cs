@@ -1,8 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Photon.Pun;
 
-public class Structure : MonoBehaviour
+public class Structure : MonoBehaviourPun
 {
     [SerializeField] private int maxHealth = 25;
     private int currentHealth;
@@ -20,7 +21,12 @@ public class Structure : MonoBehaviour
         if (currentHealth <= 0)
         {
             Debug.Log("La estructura ha sido destruida. Fin del juego.");
-            // Aquí puedes cargar una escena de derrota o mostrar un mensaje
+            OnStructureDestroyed();
         }
+    }
+
+    private void OnStructureDestroyed()
+    {
+        PhotonNetwork.LoadLevel("GameOver");  
     }
 }
