@@ -10,9 +10,7 @@ public class GameControllers : MonoBehaviourPunCallbacks
     [SerializeField] private GameObject playerPrefab;
     [SerializeField] private GameObject enemyPrefab; // Prefab del enemigo
     [SerializeField] private Transform spawner; // Objeto vacío que será el spawner móvil
-    [SerializeField] private float spawnerSpeed = 2f; // Velocidad del movimiento del spawner
-    [SerializeField] private float spawnerLeftLimit = -4f; // Límite izquierdo del spawner
-    [SerializeField] private float spawnerRightLimit = 4f; // Límite derecho del spawner
+
     [SerializeField] private int structureHealth = 15; // Vida inicial de la estructura
     [SerializeField] private Text timerText; // Texto del temporizador
     [SerializeField] private Text structureHealthText; // Texto de la vida de la estructura
@@ -20,7 +18,6 @@ public class GameControllers : MonoBehaviourPunCallbacks
 
     private float timer;
     private bool gameOver;
-    private bool movingRight = true; // Dirección del movimiento del spawner
 
     void Start()
     {
@@ -39,7 +36,7 @@ public class GameControllers : MonoBehaviourPunCallbacks
         if (gameOver) return;
 
         UpdateTimer();
-        MoveSpawner(); // Mover el spawner de izquierda a derecha
+        
     }
 
     public override void OnJoinedRoom()
@@ -79,26 +76,6 @@ public class GameControllers : MonoBehaviourPunCallbacks
         }
     }
 
-    private void MoveSpawner()
-    {
-        // Movimiento del spawner entre los límites
-        if (movingRight)
-        {
-            spawner.position += Vector3.right * spawnerSpeed * Time.deltaTime;
-            if (spawner.position.x >= spawnerRightLimit)
-            {
-                movingRight = false; // Cambia la dirección
-            }
-        }
-        else
-        {
-            spawner.position += Vector3.left * spawnerSpeed * Time.deltaTime;
-            if (spawner.position.x <= spawnerLeftLimit)
-            {
-                movingRight = true; // Cambia la dirección
-            }
-        }
-    }
 
     public void DamageStructure(int damage)
     {

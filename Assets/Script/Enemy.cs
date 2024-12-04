@@ -22,9 +22,9 @@ public class Enemy : MonoBehaviourPun
     }
 
     // Método para hacer daño a la estructura al colisionar con ella
-    private void OnTriggerEnter(Collider other)
+    private void OnCollisionEnter(Collision collision)
     {
-        if (other.CompareTag("Structure")) // Suponiendo que la estructura tiene el tag "Structure"
+        if (collision.gameObject.CompareTag("Structure")) // Asegúrate de que la estructura tiene el tag "Structure"
         {
             GameControllers gameController = FindObjectOfType<GameControllers>();
             if (gameController != null)
