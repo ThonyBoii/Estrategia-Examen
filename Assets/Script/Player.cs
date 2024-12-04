@@ -3,16 +3,20 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using Photon.Pun;
+using Photon.Pun.Demo.PunBasics;
 
 public class Player : MonoBehaviourPun
 {
     private static GameObject localInstance;
 
     [SerializeField] private TextMeshPro playerNameText;
-    [SerializeField] private GameObject bulletPrefab;
-
+    [SerializeField] private GameObject bulletPrefab; // Prefab de la bala
+    [SerializeField] private Transform bulletSpawnPoint; // Punto desde donde se dispara
+    [SerializeField] private float bulletSpeed = 20f; // Velocidad de la bala
     private Rigidbody rb;
     [SerializeField] private float speed;
+
+    private GameControllers gameController;
 
     public static GameObject LocalInstance { get { return localInstance; } }
 
@@ -24,8 +28,12 @@ public class Player : MonoBehaviourPun
             photonView.RPC("SetName", RpcTarget.AllBuffered, GameData.playerName);
             localInstance = gameObject;
         }
+
         DontDestroyOnLoad(gameObject);
         rb = GetComponent<Rigidbody>();
+
+        // Obtener la referencia al GameControllers en la escena
+        gameController = FindObjectOfType<GameControllers>();
     }
 
     [PunRPC]
@@ -41,31 +49,44 @@ public class Player : MonoBehaviourPun
             return;
         }
         Move();
-        Shoot();
+        if (Input.GetMouseButtonDown(0)) // Clic izquierdo para disparar
+        {
+            Shoot();
+        }
+
+        // Verificar la condición de victoria
+        CheckWinCondition();
     }
 
     void Move()
     {
-        float horizontal = Input.GetAxisRaw("Horizontal");
-        float vertical = Input.GetAxisRaw("Vertical");
+        float rotationInput = Input.GetAxisRaw("Horizontal");
+        float movementInput = Input.GetAxisRaw("Vertical");
 
-        rb.velocity = new Vector3(horizontal * speed, rb.velocity.y, vertical * speed);
+        transform.Rotate(0, rotationInput * speed * Time.deltaTime, 0);
 
-        if (horizontal != 0 || vertical != 0)
-        {
-            transform.forward = new Vector3(horizontal, 0, vertical);
-        }
-
+        Vector3 movement = transform.forward * movementInput * speed * Time.deltaTime;
+        rb.MovePosition(rb.position + movement);
     }
 
-    void Shoot()
+    private void Shoot()
     {
-        if (Input.GetMouseButtonDown(0)) 
+        GameObject bullet = PhotonNetwork.Instantiate(bulletPrefab.name, bulletSpawnPoint.position, Quaternion.identity);
+        Rigidbody bulletRb = bullet.GetComponent<Rigidbody>();
+        bulletRb.velocity = transform.forward * bulletSpeed;
+    }
+
+    private void CheckWinCondition()
+    {
+        if (gameController != null && gameController.IsStructureAlive()) // Llamada correcta a la función
         {
-            GameObject obj = PhotonNetwork.Instantiate(bulletPrefab.name, transform.position, Quaternion.identity);
-            obj.GetComponent<Bullet>().SetUp(transform.forward, photonView.ViewID);
+            photonView.RPC("LoadVictoryScene", RpcTarget.All);
         }
     }
 
-    
+    [PunRPC]
+    private void LoadVictoryScene()
+    {
+        PhotonNetwork.LoadLevel("VictoryScene");
+    }
 }

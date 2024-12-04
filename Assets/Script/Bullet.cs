@@ -5,39 +5,30 @@ using Photon.Pun;
 
 public class Bullet : MonoBehaviourPun
 {
-    private int ownerId;
-    private Rigidbody rb;
-    [SerializeField] private float speed;
-    private Vector3 direction;
+    [SerializeField] private float bulletSpeed = 20f; // Velocidad de la bala
+    [SerializeField] private int damageToEnemy = 1; // Daño que causa al enemigo
 
-    private void Awake()
+    private void Start()
     {
-        rb = GetComponent<Rigidbody>();
-    }
-
-    public void SetUp(Vector3 direction, int ownerId)
-    {
-        this.direction = direction;
-        this.ownerId = ownerId;
+        // Destruir la bala después de 3 segundos si no ha colisionado con nada
+        Destroy(gameObject, 3f);
     }
 
     private void Update()
     {
-        if(!photonView.IsMine || !PhotonNetwork.IsConnected)
-        {
-            return;
-        }
-        rb.velocity = direction.normalized * speed;
+        // Mover la bala hacia adelante
+        transform.Translate(Vector3.forward * bulletSpeed * Time.deltaTime);
     }
 
+    // Detectar colisión con el enemigo
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Enemy1"))
+        if (other.CompareTag("Enemy")) // Suponiendo que el enemigo tiene el tag "Enemy"
         {
-            PhotonNetwork.Destroy(other.gameObject); 
-        }
-        else
-        {
+            // Destruir al enemigo
+            PhotonNetwork.Destroy(other.gameObject);
+
+            // Destruir la bala
             PhotonNetwork.Destroy(gameObject);
         }
     }
