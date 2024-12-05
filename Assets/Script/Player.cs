@@ -27,17 +27,17 @@ public class Player : MonoBehaviourPun
             playerNameText.text = GameData.playerName;
             photonView.RPC("SetName", RpcTarget.AllBuffered, GameData.playerName);
             localInstance = gameObject;
+
+            DontDestroyOnLoad(gameObject);
+            rb = GetComponent<Rigidbody>();
+
+            // Obtener la referencia al GameControllers en la escena
+            gameController = FindObjectOfType<GameControllers>();
         }
         else
         {
             GetComponent<Player>().enabled = false;
-        }
-
-        DontDestroyOnLoad(gameObject);
-        rb = GetComponent<Rigidbody>();
-
-        // Obtener la referencia al GameControllers en la escena
-        gameController = FindObjectOfType<GameControllers>();
+        }        
     }
 
     [PunRPC]
@@ -52,12 +52,13 @@ public class Player : MonoBehaviourPun
         {
             return;
         }
+
         Move();
-        if (Input.GetMouseButtonDown(0))
-        {
-            Shoot();
-        }
-        CheckWinCondition();
+        //if (Input.GetMouseButtonDown(0))
+        //{
+        //    Shoot();
+        //}
+        //CheckWinCondition();
     }
 
     void Move()
@@ -84,13 +85,13 @@ public class Player : MonoBehaviourPun
 
     }
 
-    private void CheckWinCondition()
-    {
-        if (gameController != null && gameController.IsStructureAlive())
-        {
-            photonView.RPC("LoadVictoryScene", RpcTarget.All); // Usa RPC para cargar la victoria en todos los clientes
-        }
-    }
+    //private void CheckWinCondition()
+    //{
+    //    if (gameController != null && gameController.IsStructureAlive())
+    //    {
+    //        photonView.RPC("LoadVictoryScene", RpcTarget.All); // Usa RPC para cargar la victoria en todos los clientes
+    //    }
+    //}
 
     [PunRPC]
     private void SetupBullet(int bulletViewID)
