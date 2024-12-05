@@ -28,12 +28,16 @@ public class Player : MonoBehaviourPun
             photonView.RPC("SetName", RpcTarget.AllBuffered, GameData.playerName);
             localInstance = gameObject;
         }
+        else
+        {
+            GetComponent<Player>().enabled = false;
+        }
 
-        DontDestroyOnLoad(gameObject);
-        rb = GetComponent<Rigidbody>();
+        //DontDestroyOnLoad(gameObject);
+        //rb = GetComponent<Rigidbody>();
 
-        // Obtener la referencia al GameControllers en la escena
-        gameController = FindObjectOfType<GameControllers>();
+        //// Obtener la referencia al GameControllers en la escena
+        //gameController = FindObjectOfType<GameControllers>();
     }
 
     [PunRPC]
@@ -49,11 +53,11 @@ public class Player : MonoBehaviourPun
             return;
         }
         Move();
-        if (Input.GetMouseButtonDown(0)) 
-        {
-            Shoot();
-        }
-        CheckWinCondition();
+        //if (Input.GetMouseButtonDown(0)) 
+        //{
+        //    Shoot();
+        //}
+        //CheckWinCondition();
     }
 
     void Move()
