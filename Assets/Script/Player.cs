@@ -26,18 +26,18 @@ public class Player : MonoBehaviourPun
         {
             playerNameText.text = GameData.playerName;
             photonView.RPC("SetName", RpcTarget.AllBuffered, GameData.playerName);
-            localInstance = gameObject;
-
-            DontDestroyOnLoad(gameObject);
-            rb = GetComponent<Rigidbody>();
-
-            // Obtener la referencia al GameControllers en la escena
-            gameController = FindObjectOfType<GameControllers>();
+            localInstance = gameObject;            
         }
-        else
-        {
-            GetComponent<Player>().enabled = false;
-        }        
+        //else
+        //{
+        //    GetComponent<Player>().enabled = false;
+        //}
+
+        DontDestroyOnLoad(gameObject);
+        rb = GetComponent<Rigidbody>();
+
+        // Obtener la referencia al GameControllers en la escena
+        //gameController = FindObjectOfType<GameControllers>();
     }
 
     [PunRPC]
@@ -54,10 +54,10 @@ public class Player : MonoBehaviourPun
         }
 
         Move();
-        //if (Input.GetMouseButtonDown(0))
-        //{
-        //    Shoot();
-        //}
+        if (Input.GetMouseButtonDown(0))
+        {
+            Shoot();
+        }
         //CheckWinCondition();
     }
 

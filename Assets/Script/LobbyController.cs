@@ -12,6 +12,7 @@ public class LobbyController : MonoBehaviourPunCallbacks
     [SerializeField] private Button startButton;
     [SerializeField] private TMP_InputField playerNameInputField;
     [SerializeField] private string sceneName;
+    [SerializeField] private GameObject playerPrefab;
 
     private void Awake()
     {
@@ -37,6 +38,13 @@ public class LobbyController : MonoBehaviourPunCallbacks
 
     public override void OnJoinedRoom()
     {
+        // Instancia un nuevo jugador solo si no existe una instancia local
+        if (Player.LocalInstance == null)
+        {
+            // Usamos PhotonNetwork.Instantiate para crear la instancia del jugador
+            PhotonNetwork.Instantiate(playerPrefab.name, Vector3.zero, Quaternion.identity);
+        }
+
         if (PhotonNetwork.IsMasterClient)
         {
             PhotonNetwork.LoadLevel(sceneName);
