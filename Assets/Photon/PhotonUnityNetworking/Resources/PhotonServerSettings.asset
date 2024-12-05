@@ -42,6 +42,10 @@ MonoBehaviour:
   - SetName
   - FireBullet
   - LoadVictoryScene
+  - ApplyDamage
+  - LoadScene
+  - SyncTimer
+  - SetupBullet
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1

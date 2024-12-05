@@ -72,13 +72,6 @@ public class GameControllers : MonoBehaviourPunCallbacks
             CheckGameOver();
         }
 
-        photonView.RPC("SyncTimer", RpcTarget.All, timer);
-    }
-
-    [PunRPC]
-    private void SyncTimer(float time)
-    {
-        timer = time;
         timerText.text = "Time: " + Mathf.Ceil(timer).ToString();
     }
 
@@ -143,12 +136,6 @@ public class GameControllers : MonoBehaviourPunCallbacks
         {
             photonView.RPC("LoadScene", RpcTarget.All, "GameOver");
         }
-    }
-
-    [PunRPC]
-    private void LoadScene(string sceneName)
-    {
-        PhotonNetwork.LoadLevel(sceneName);
     }
 
 }
