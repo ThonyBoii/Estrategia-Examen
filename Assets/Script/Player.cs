@@ -33,11 +33,11 @@ public class Player : MonoBehaviourPun
             GetComponent<Player>().enabled = false;
         }
 
-        //DontDestroyOnLoad(gameObject);
-        //rb = GetComponent<Rigidbody>();
+        DontDestroyOnLoad(gameObject);
+        rb = GetComponent<Rigidbody>();
 
-        //// Obtener la referencia al GameControllers en la escena
-        //gameController = FindObjectOfType<GameControllers>();
+        // Obtener la referencia al GameControllers en la escena
+        gameController = FindObjectOfType<GameControllers>();
     }
 
     [PunRPC]
