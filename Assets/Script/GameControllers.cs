@@ -27,12 +27,12 @@ public class GameControllers : MonoBehaviourPunCallbacks
             PhotonNetwork.Instantiate(playerPrefab.name, new Vector3(0, 10, 0), Quaternion.identity);
         }
 
-        //timer = gameDuration;
-        //UpdateStructureHealthUI();
-        //if (PhotonNetwork.IsMasterClient)
-        //{
-        //    StartCoroutine(SpawnEnemies());
-        //}
+        timer = gameDuration;
+        UpdateStructureHealthUI();
+        if (PhotonNetwork.IsMasterClient)
+        {
+            StartCoroutine(SpawnEnemies());
+        }
     }
 
     void Update()
