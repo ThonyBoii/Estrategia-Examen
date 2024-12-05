@@ -28,16 +28,16 @@ public class Enemy : MonoBehaviourPun
     }
 
     // Método 
-    private void OnCollisionEnter(Collision collision)
-    {
-        if (collision.gameObject.CompareTag("Structure")) 
-        {
-            GameControllers gameController = FindObjectOfType<GameControllers>();
-            if (gameController != null)
-            {
-                gameController.DamageStructure(damageToStructure); 
-            }
-            PhotonNetwork.Destroy(gameObject);
-        }
-    }
+    //private void OnCollisionEnter(Collision collision)
+    //{
+    //    if (collision.gameObject.CompareTag("Structure")) 
+    //    {
+    //        GameControllers gameController = FindObjectOfType<GameControllers>();
+    //        if (gameController != null)
+    //        {
+    //            gameController.DamageStructure(damageToStructure); 
+    //        }
+    //        PhotonNetwork.Destroy(gameObject);
+    //    }
+    //}
 }
