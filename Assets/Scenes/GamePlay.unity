@@ -1272,7 +1272,7 @@ PrefabInstance:
         type: 3}
       propertyPath: bulletSpawnPoint
       value: 
-      objectReference: {fileID: 7685871702640119052}
+      objectReference: {fileID: 0}
     - target: {fileID: 857067807029112610, guid: 5b2c6da11c7411e45ad077c8c5c8156d,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -1399,7 +1399,8 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 6174111151927220079, guid: 5b2c6da11c7411e45ad077c8c5c8156d, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 368397120038133422, guid: 5b2c6da11c7411e45ad077c8c5c8156d,
@@ -1411,12 +1412,6 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 0}
   m_SourcePrefab: {fileID: 100100000, guid: 5b2c6da11c7411e45ad077c8c5c8156d, type: 3}
---- !u!4 &7685871702640119052 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 7765002162898457175, guid: 5b2c6da11c7411e45ad077c8c5c8156d,
-    type: 3}
-  m_PrefabInstance: {fileID: 7685871702640119051}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
