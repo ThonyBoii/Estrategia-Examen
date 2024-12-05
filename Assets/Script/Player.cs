@@ -53,11 +53,11 @@ public class Player : MonoBehaviourPun
             return;
         }
         Move();
-        //if (Input.GetMouseButtonDown(0)) 
-        //{
-        //    Shoot();
-        //}
-        //CheckWinCondition();
+        if (Input.GetMouseButtonDown(0))
+        {
+            Shoot();
+        }
+        CheckWinCondition();
     }
 
     void Move()
