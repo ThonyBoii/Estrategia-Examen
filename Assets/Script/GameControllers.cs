@@ -45,6 +45,7 @@ public class GameControllers : MonoBehaviourPunCallbacks
         if (PhotonNetwork.IsMasterClient)
         {
             timer -= Time.deltaTime;
+
             photonView.RPC("UpdateTimerUI", RpcTarget.All, timer);
             if (timer <= 0)
             {
@@ -87,7 +88,7 @@ public class GameControllers : MonoBehaviourPunCallbacks
     {
         while (!gameOver)
         {
-            yield return new WaitForSeconds(3f); // Spawnea cada 3 segundos
+            yield return new WaitForSeconds(3f); 
 
             // Instancia un enemigo desde la posición del spawner
             GameObject enemyObject = PhotonNetwork.Instantiate(enemyPrefab.name, spawner.position, Quaternion.identity);
