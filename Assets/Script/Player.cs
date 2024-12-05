@@ -37,7 +37,7 @@ public class Player : MonoBehaviourPun
         rb = GetComponent<Rigidbody>();
 
         // Obtener la referencia al GameControllers en la escena
-        //gameController = FindObjectOfType<GameControllers>();
+        gameController = FindObjectOfType<GameControllers>();
     }
 
     [PunRPC]
