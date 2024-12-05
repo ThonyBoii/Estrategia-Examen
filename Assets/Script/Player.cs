@@ -53,7 +53,6 @@ public class Player : MonoBehaviourPun
         {
             Shoot();
         }
-
         CheckWinCondition();
     }
 
@@ -72,31 +71,34 @@ public class Player : MonoBehaviourPun
     {
         if (bulletPrefab == null || bulletSpawnPoint == null)
         {
-            Debug.LogError("BulletPrefab o BulletSpawnPoint no estan!");
+            Debug.LogError("BulletPrefab o BulletSpawnPoint no están configurados.");
             return;
         }
 
         GameObject obj = PhotonNetwork.Instantiate(bulletPrefab.name, bulletSpawnPoint.position, bulletSpawnPoint.rotation);
-
-        Bullet bulletScript = obj.GetComponent<Bullet>();
-        if (bulletScript != null)
-        {
-            bulletScript.SetUp(transform.forward, photonView.ViewID);
-        }
+        photonView.RPC("SetupBullet", RpcTarget.All, obj.GetComponent<PhotonView>().ViewID);
 
     }
 
     private void CheckWinCondition()
     {
-        if (gameController != null && gameController.IsStructureAlive()) 
+        if (gameController != null && gameController.IsStructureAlive())
         {
-            photonView.RPC("LoadVictoryScene", RpcTarget.All);
+            photonView.RPC("LoadVictoryScene", RpcTarget.All); // Usa RPC para cargar la victoria en todos los clientes
         }
     }
 
     [PunRPC]
-    private void LoadVictoryScene()
+    private void SetupBullet(int bulletViewID)
     {
-        PhotonNetwork.LoadLevel("VictoryScene");
+        PhotonView bulletView = PhotonView.Find(bulletViewID);
+        if (bulletView != null)
+        {
+            Bullet bulletScript = bulletView.GetComponent<Bullet>();
+            if (bulletScript != null)
+            {
+                bulletScript.SetUp(transform.forward, photonView.ViewID);
+            }
+        }
     }
 }

@@ -29,7 +29,10 @@ public class GameControllers : MonoBehaviourPunCallbacks
 
         timer = gameDuration;
         UpdateStructureHealthUI();
-        StartCoroutine(SpawnEnemies());
+        if (PhotonNetwork.IsMasterClient)
+        {
+            StartCoroutine(SpawnEnemies());
+        }
     }
 
     void Update()
@@ -39,8 +42,11 @@ public class GameControllers : MonoBehaviourPunCallbacks
             return;
         }
 
-        UpdateTimer();
-        
+        if (PhotonNetwork.IsMasterClient)
+        {
+            UpdateTimer();
+        }
+
     }
 
     public override void OnJoinedRoom()
@@ -66,6 +72,13 @@ public class GameControllers : MonoBehaviourPunCallbacks
             CheckGameOver();
         }
 
+        photonView.RPC("SyncTimer", RpcTarget.All, timer);
+    }
+
+    [PunRPC]
+    private void SyncTimer(float time)
+    {
+        timer = time;
         timerText.text = "Time: " + Mathf.Ceil(timer).ToString();
     }
 
@@ -94,6 +107,12 @@ public class GameControllers : MonoBehaviourPunCallbacks
 
     public void DamageStructure(int damage)
     {
+        photonView.RPC("ApplyDamage", RpcTarget.All, damage);
+    }
+
+    [PunRPC]
+    private void ApplyDamage(int damage)
+    {
         structureHealth -= damage;
         UpdateStructureHealthUI();
 
@@ -118,11 +137,18 @@ public class GameControllers : MonoBehaviourPunCallbacks
 
         if (structureHealth > 0 && timer <= 0)
         {
-            PhotonNetwork.LoadLevel("Victory");
+            photonView.RPC("LoadScene", RpcTarget.All, "Victory");
         }
         else
         {
-            PhotonNetwork.LoadLevel("GameOver");
+            photonView.RPC("LoadScene", RpcTarget.All, "GameOver");
         }
     }
+
+    [PunRPC]
+    private void LoadScene(string sceneName)
+    {
+        PhotonNetwork.LoadLevel(sceneName);
+    }
+
 }
