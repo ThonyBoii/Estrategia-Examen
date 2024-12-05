@@ -72,7 +72,7 @@ public class Player : MonoBehaviourPun
     {
         if (bulletPrefab == null || bulletSpawnPoint == null)
         {
-            Debug.LogError("BulletPrefab o BulletSpawnPoint no están configurados.");
+            Debug.LogError("BulletPrefab o BulletSpawnPoint no están.");
             return;
         }
 
