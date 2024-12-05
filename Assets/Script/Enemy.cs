@@ -2,37 +2,41 @@ using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEngine.GraphicsBuffer;
 
 public class Enemy : MonoBehaviourPun
 {
-    [SerializeField] private float moveSpeed = 3f; // Velocidad del enemigo
-    [SerializeField] private int damageToStructure = 1; // Daño que causa al tocar la estructura
+    // Atributos 
+    [SerializeField] private float moveSpeed = 3f; 
+    [SerializeField] private int damageToStructure = 1; 
+
+    private Transform target;
 
     private void Update()
     {
-        if (!photonView.IsMine) return; // Asegúrate de que solo el enemigo controlado por Photon se mueva
-
-        Move();
+        if (!photonView.IsMine) 
+        {
+            return;
+        }
+        Vector3 direction = (target.position - transform.position).normalized;
+        transform.position += direction * moveSpeed * Time.deltaTime;
     }
 
-    private void Move()
+    public void SetTarget(Transform newTarget)
     {
-        // Movimiento del enemigo de izquierda a derecha
-        transform.Translate(Vector3.right * moveSpeed * Time.deltaTime);
+        target = newTarget;
     }
 
-    // Método para hacer daño a la estructura al colisionar con ella
+    // Método 
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.CompareTag("Structure")) // Asegúrate de que la estructura tiene el tag "Structure"
+        if (collision.gameObject.CompareTag("Structure")) 
         {
             GameControllers gameController = FindObjectOfType<GameControllers>();
             if (gameController != null)
             {
-                gameController.DamageStructure(damageToStructure); // Llama al método DamageStructure de GameControllers
+                gameController.DamageStructure(damageToStructure); 
             }
-
-            // Destruir el enemigo después de tocar la estructura
             PhotonNetwork.Destroy(gameObject);
         }
     }

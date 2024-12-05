@@ -129,7 +129,7 @@ MonoBehaviour:
   playerNameText: {fileID: 2872135216470333684}
   bulletPrefab: {fileID: 783454722266371964, guid: 85cbd133cb8d74c4e98b6a046185e7f7,
     type: 3}
-  bulletSpawnPoint: {fileID: 0}
+  bulletSpawnPoint: {fileID: 7765002162898457175}
   bulletSpeed: 20
   speed: 80
 --- !u!114 &4820035376513916679

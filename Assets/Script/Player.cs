@@ -10,9 +10,9 @@ public class Player : MonoBehaviourPun
     private static GameObject localInstance;
 
     [SerializeField] private TextMeshPro playerNameText;
-    [SerializeField] private GameObject bulletPrefab; // Prefab de la bala
-    [SerializeField] private Transform bulletSpawnPoint; // Punto desde donde se dispara
-    [SerializeField] private float bulletSpeed = 20f; // Velocidad de la bala
+    [SerializeField] private GameObject bulletPrefab; 
+    [SerializeField] private Transform bulletSpawnPoint; 
+    [SerializeField] private float bulletSpeed = 20f; 
     private Rigidbody rb;
     [SerializeField] private float speed;
 
@@ -49,12 +49,11 @@ public class Player : MonoBehaviourPun
             return;
         }
         Move();
-        if (Input.GetMouseButtonDown(0)) // Clic izquierdo para disparar
+        if (Input.GetMouseButtonDown(0)) 
         {
             Shoot();
         }
 
-        // Verificar la condición de victoria
         CheckWinCondition();
     }
 
@@ -71,14 +70,25 @@ public class Player : MonoBehaviourPun
 
     private void Shoot()
     {
-        GameObject bullet = PhotonNetwork.Instantiate(bulletPrefab.name, bulletSpawnPoint.position, Quaternion.identity);
-        Rigidbody bulletRb = bullet.GetComponent<Rigidbody>();
-        bulletRb.velocity = transform.forward * bulletSpeed;
+        if (bulletPrefab == null || bulletSpawnPoint == null)
+        {
+            Debug.LogError("BulletPrefab o BulletSpawnPoint no estan!");
+            return;
+        }
+
+        GameObject obj = PhotonNetwork.Instantiate(bulletPrefab.name, bulletSpawnPoint.position, bulletSpawnPoint.rotation);
+
+        Bullet bulletScript = obj.GetComponent<Bullet>();
+        if (bulletScript != null)
+        {
+            bulletScript.SetUp(transform.forward, photonView.ViewID);
+        }
+
     }
 
     private void CheckWinCondition()
     {
-        if (gameController != null && gameController.IsStructureAlive()) // Llamada correcta a la función
+        if (gameController != null && gameController.IsStructureAlive()) 
         {
             photonView.RPC("LoadVictoryScene", RpcTarget.All);
         }

@@ -7,15 +7,16 @@ using UnityEngine.UI;
 
 public class GameControllers : MonoBehaviourPunCallbacks
 {
+    
     [SerializeField] private GameObject playerPrefab;
-    [SerializeField] private GameObject enemyPrefab; // Prefab del enemigo
-    [SerializeField] private Transform spawner; // Objeto vacío que será el spawner móvil
-
-    [SerializeField] private int structureHealth = 15; // Vida inicial de la estructura
-    [SerializeField] private Text timerText; // Texto del temporizador
-    [SerializeField] private Text structureHealthText; // Texto de la vida de la estructura
-    [SerializeField] private float gameDuration = 30f; // Duración del juego en segundos
-
+    [SerializeField] private GameObject enemyPrefab; 
+    [SerializeField] private Transform spawner; 
+    // Atributos 
+    [SerializeField] private int structureHealth = 15; 
+    [SerializeField] private Text timerText; 
+    [SerializeField] private Text structureHealthText; 
+    [SerializeField] private float gameDuration = 30f; 
+    //Variables
     private float timer;
     private bool gameOver;
 
@@ -33,7 +34,10 @@ public class GameControllers : MonoBehaviourPunCallbacks
 
     void Update()
     {
-        if (gameOver) return;
+        if (gameOver)
+        {
+            return;
+        }
 
         UpdateTimer();
         
@@ -72,7 +76,18 @@ public class GameControllers : MonoBehaviourPunCallbacks
             yield return new WaitForSeconds(3f); // Spawnea cada 3 segundos
 
             // Instancia un enemigo desde la posición del spawner
-            PhotonNetwork.Instantiate(enemyPrefab.name, spawner.position, Quaternion.identity);
+            GameObject enemyObject = PhotonNetwork.Instantiate(enemyPrefab.name, spawner.position, Quaternion.identity);
+            Enemy enemyScript = enemyObject.GetComponent<Enemy>();
+
+            if (enemyScript != null)
+            {
+                // Asigna el objetivo (estructura)
+                GameObject structure = GameObject.FindWithTag("Structure");
+                if (structure != null)
+                {
+                    enemyScript.SetTarget(structure.transform);
+                }
+            }
         }
     }
 
@@ -91,7 +106,10 @@ public class GameControllers : MonoBehaviourPunCallbacks
 
     private void UpdateStructureHealthUI()
     {
-        structureHealthText.text = "Structure Health: " + structureHealth.ToString();
+        if (structureHealthText != null)
+        {
+            structureHealthText.text = "Structure: " + structureHealth;
+        }
     }
 
     private void CheckGameOver()
@@ -100,13 +118,11 @@ public class GameControllers : MonoBehaviourPunCallbacks
 
         if (structureHealth > 0 && timer <= 0)
         {
-            // Victoria
-            PhotonNetwork.LoadLevel("VictoryScene");
+            PhotonNetwork.LoadLevel("Victory");
         }
         else
         {
-            // Derrota
-            PhotonNetwork.LoadLevel("LoseScene");
+            PhotonNetwork.LoadLevel("GameOver");
         }
     }
 }
